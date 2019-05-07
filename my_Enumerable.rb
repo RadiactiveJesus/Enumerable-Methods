@@ -1,22 +1,22 @@
 module Enumerable
     def my_each
         if self.class == Array
-            for i in (0..self.length - 1) do
-            yield(self[i])
+            for i in (0..self.length) do
+                yield(self[i])
             end 
         elsif self.class == Hash
-            for i in (0..self.length - 1) do
+            for i in (0..self.length) do
                 yield(self.keys[i], self.value[i])
             end
         end 
     end
     def my_each_with_index
         if self.class == Array
-            for i in (0..self.length - 1) do
+            for i in (0..self.length) do
                 yield(self[i], i)
             end
         elsif self.class == Hash
-            for i in (0..self.keys.length - 1) do
+            for i in (0..self.keys.length) do
                 yield(self.keys[i], self.values[i], i)
             end
         end
@@ -44,14 +44,14 @@ module Enumerable
         if self.class == Array
             self.my_each do |value|
                 if !yield(value)
-                return false
+                    return false
                 end
             end
         elsif self.class == Hash
             self.my_each do |key, value|
-              if !yield(key, value)
-                return false
-              end
+                if !yield(key, value)
+                    return false
+                end
             end
         end
         return true
@@ -60,13 +60,13 @@ module Enumerable
         if self.class == Array
             self.my_each do |value|
                 if yield(value)
-                return true
+                    return true
                 end
             end
         elsif self.class == Hash
             self.my_each do |key, value|
                 if yield(key, value)
-                  return true
+                    return true
                 end
             end
             false
@@ -76,31 +76,31 @@ module Enumerable
         if self.class == Array
             self.my_each do |value|
                 if yield(value)
-                return false
+                    return false
                 end
             end
         elsif self.class == Hash
             self.my_each do |key, value|
                 if yield(key, value)
-                  return false
+                    return false
                 end
             end
             false
         end
         true
     end
-    def my_count
+    def my_count(item, hash_value)
         count = 0
         if self.class == Array
             self.my_each do |value|
-                if yield(value)
-                count += 1
+                if item == value
+                    count += 1
                 end
             end
         elsif self.class == Hash
             self.my_each do |key, value|
-                if yield(key, value)
-                  count += 1
+                if item == key && hash_value == value
+                    count += 1
                 end
             end
         end
@@ -111,11 +111,11 @@ module Enumerable
             result_array = []
             if proc.is_a? (Proc)
                 self.my_each_with_index do |value, i|
-                result_array[i] = proc.call(value)
+                    result_array[i] = proc.call(value)
                 end
             else
                 self.my_each_with_index do |value, i|
-                result_array[i] = yield(value)
+                    result_array[i] = yield(value)
                 end
             end
             return result_array
@@ -141,7 +141,8 @@ module Enumerable
             end
         elsif self.class == Hash
             self.my_each do |key, value|
-              total = yield(total, value)
+                total = yield(total, value)
+            end
         end
         return total
     end
