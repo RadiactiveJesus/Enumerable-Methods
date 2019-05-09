@@ -132,5 +132,3 @@ module Enumerable
         return total
     end
 end
-array= [1, 2, 3, 4, 5]
-print array.my_map {|i| i + 1}
