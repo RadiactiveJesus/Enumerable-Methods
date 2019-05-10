@@ -99,7 +99,7 @@ module Enumerable
                 end
             end
         else
-            self.length
+            count = self.length
         end
         return count
     end
